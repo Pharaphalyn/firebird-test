@@ -38,7 +38,7 @@ async function getFirebirdQuote(req, res) {
     });
     res.send(data);
   } catch (e) {
-    res.status(401).send({text: 'Available fields: from, to, amount, receiver, deadline.', error: e});
+    res.status(400).send({text: 'Available fields: from, to, amount, receiver, deadline.', error: e});
   }
 }
 
