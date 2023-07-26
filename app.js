@@ -24,7 +24,7 @@ async function getFirebirdQuote(req, res) {
   //Supposed to use Firebird's default slippage so no reason to pass it here
   delete params.slippage;
   //Assume that caller's address (as stated in the task) is the same as the receiver's address
-  params.source = params.reciever || 'whatever';
+  params.source = params.receiver || 'whatever';
   params.deadline = params.deadline || +(new Date()) + 500;
   try {
     const { data } = await axios.get(ROUTER_API, {
