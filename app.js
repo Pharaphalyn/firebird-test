@@ -10,7 +10,7 @@ const API_KEY = 'firebird_d3_prod_180723';
 
 async function getFirebirdQuote(req, res) {
 
-  // Example params
+  // Example params for testing
   // const params = {
   //     from: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
   //     to: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
@@ -23,11 +23,9 @@ async function getFirebirdQuote(req, res) {
 
   //Supposed to use Firebird's default slippage so no reason to pass it here
   delete params.slippage;
-  
-  params.source = 'whatever';
-  if (!params.deadline) {
-    params.deadline = +(new Date()) + 500;
-  }
+  //Assume that caller's address (as stated in the task) is the same as the receiver's address
+  params.source = params.reciever || 'whatever';
+  params.deadline = params.deadline || +(new Date()) + 500;
   try {
     const { data } = await axios.get(ROUTER_API, {
       headers: {
@@ -36,6 +34,7 @@ async function getFirebirdQuote(req, res) {
       },
       params
     });
+    delete data.maxReturn.tokens;
     res.send(data);
   } catch (e) {
     res.status(400).send({text: 'Available fields: from, to, amount, receiver, deadline.', error: e});
